@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const authRoutes = require('./api/auth/auth-routes');
 
 require('dotenv').config();
 
@@ -20,6 +21,8 @@ express()
   .use(morgan('dev'))
   .use(express.urlencoded({ extended: false }))
   .use(express.json())
+
+  .use('/auth', authRoutes)
 
   .listen(PORT, () => {
     console.info(`🌍 Listening on port ${PORT}`);
