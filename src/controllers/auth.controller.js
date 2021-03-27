@@ -1,20 +1,17 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../user-model');
+
 require('dotenv').config();
 
 const { JWT_SECRET } = process.env;
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
-
-  // validation
   if (!username || !email || !password) {
     return res.status(400).json({ message: 'Please enter all fields' });
   }
-
   try {
-    // check for exisiting user
     const user = await User.findOne({ email });
     if (user) throw Error('User already exists');
 
@@ -46,7 +43,7 @@ const register = async (req, res) => {
   }
 };
 
-router.post('/login', async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -76,6 +73,6 @@ router.post('/login', async (req, res) => {
   } catch (e) {
     res.status(400).json({ msg: e.message });
   }
-});
+};
 
-module.exports = { register };
+module.exports = { register, login };
